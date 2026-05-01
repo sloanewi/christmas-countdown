@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
+  body { margin: 0; padding: 0; background: transparent; }
+  .xmas-wrap { font-family: 'DM Sans', sans-serif; text-align: center; padding: 2rem 1rem; position: relative; overflow: hidden; background: #1a3a2a; border-radius: 16px; min-height: 260px; }
+  .snow-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; overflow: hidden; }
+  .flake { position: absolute; top: -10px; color: rgba(255,255,255,0.7); font-size: 12px; animation: fall linear infinite; }
+  @keyframes fall { to { transform: translateY(340px) rotate(360deg); opacity: 0; } }
+  .xmas-title { font-family: 'Playfair Display', serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #c8e6c9; margin: 0 0 0.25rem; opacity: 0.8; }
+  .xmas-headline { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: #fff; margin: 0 0 1.5rem; }
+  .xmas-headline span { color: #e63946; }
+  .xmas-grid { display: inline-flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .xmas-unit { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 14px 18px; min-width: 72px; }
+  .xmas-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #e63946; line-height: 1; display: block; }
+  .xmas-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-top: 4px; display: block; }
+  .xmas-tree { font-size: 32px; display: block; margin-bottom: 0.5rem; animation: sway 3s ease-in-out infinite; }
+  @keyframes sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+  .xmas-footer { margin-top: 1.25rem; font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 1px; }
+  .xmas-done { font-family: 'Playfair Display', serif; font-size: 24px; color: #e63946; }
+</style>
+</head>
+<body>
+<div class="xmas-wrap">
+  <div class="snow-container" id="snow"></div>
+  <span class="xmas-tree">🎄</span>
+  <p class="xmas-title">Countdown to</p>
+  <h2 class="xmas-headline">Christmas <span id="xmas-year"></span></h2>
+  <div class="xmas-grid" id="countdown-grid">
+    <div class="xmas-unit"><span class="xmas-num" id="cd-days">--</span><span class="xmas-label">Days</span></div>
+    <div class="xmas-unit"><span class="xmas-num" id="cd-hours">--</span><span class="xmas-label">Hours</span></div>
+    <div class="xmas-unit"><span class="xmas-num" id="cd-mins">--</span><span class="xmas-label">Minutes</span></div>
+    <div class="xmas-unit"><span class="xmas-num" id="cd-secs">--</span><span class="xmas-label">Seconds</span></div>
+  </div>
+  <p class="xmas-footer" id="cd-date"></p>
+</div>
+
+<script>
+  (function() {
+    var snow = document.getElementById('snow');
+    var chars = ['❄','✦','·','*'];
+    for (var i = 0; i < 18; i++) {
+      var f = document.createElement('span');
+      f.className = 'flake';
+      f.textContent = chars[i % chars.length];
+      f.style.left = (Math.random() * 100) + '%';
+      f.style.animationDuration = (3 + Math.random() * 5) + 's';
+      f.style.animationDelay = (Math.random() * 6) + 's';
+      f.style.fontSize = (8 + Math.random() * 10) + 'px';
+      snow.appendChild(f);
+    }
+
+    function tick() {
+      var now = new Date();
+      var year = (now.getMonth() < 11 || (now.getMonth() === 11 && now.getDate() <= 25))
+        ? now.getFullYear() : now.getFullYear() + 1;
+      var target = new Date(year, 11, 25, 0, 0, 0);
+      document.getElementById('xmas-year').textContent = year;
+      document.getElementById('cd-date').textContent = '25 December ' + year;
+      var diff = target - now;
+      if (diff <= 0) {
+        document.getElementById('countdown-grid').innerHTML = '<p class="xmas-done">🎅 Merry Christmas! 🎁</p>';
+        return;
+      }
+      var d = Math.floor(diff / 86400000);
+      var h = Math.floor((diff % 86400000) / 3600000);
+      var m = Math.floor((diff % 3600000) / 60000);
+      var s = Math.floor((diff % 60000) / 1000);
+      document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+      document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+      document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+      document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
+</body>
+</html>
