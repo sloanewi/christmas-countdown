@@ -10,7 +10,7 @@
   .flake { position: absolute; top: -10px; color: rgba(255,255,255,0.7); font-size: 12px; animation: fall linear infinite; }
   @keyframes fall { to { transform: translateY(340px) rotate(360deg); opacity: 0; } }
   .xmas-title { font-family: 'Fredoka One', serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #c8e6c9; margin: 0 0 0.25rem; opacity: 0.8; }
-  .xmas-headline { font-family: 'Fredoka One', serif; font-size: 24px; font-weight: 400; color: #fff; margin: 0 0 1.5rem; }
+  .xmas-headline { font-family: 'Fredoka One', serif; font-size: 24px; font-weight: 400; color: #fff; margin: 0; }
   .xmas-headline span { color: #e63946; }
   .xmas-grid { display: inline-flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
   .xmas-unit { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 14px 18px; min-width: 72px; }
@@ -32,7 +32,6 @@
     <div class="xmas-unit"><span class="xmas-num" id="cd-mins">--</span><span class="xmas-label">Minutes</span></div>
     <div class="xmas-unit"><span class="xmas-num" id="cd-secs">--</span><span class="xmas-label">Seconds</span></div>
   </div>
-  <p class="xmas-footer" id="cd-date"></p>
 </div>
 
 <script>
@@ -56,7 +55,6 @@
         ? now.getFullYear() : now.getFullYear() + 1;
       var target = new Date(year, 11, 25, 0, 0, 0);
       document.getElementById('xmas-year').textContent = year;
-      document.getElementById('cd-date').textContent = '25 December ' + year;
       var diff = target - now;
       if (diff <= 0) {
         document.getElementById('countdown-grid').innerHTML = '<p class="xmas-done">🎅 Merry Christmas! 🎁</p>';
